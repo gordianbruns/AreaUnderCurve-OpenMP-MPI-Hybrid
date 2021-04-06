@@ -1,0 +1,15 @@
+#!/bin/bash
+#PBS -N simple-mpi-openmp
+#PBS -l nodes=8:ppn=8
+#PBS -m bea
+#PBS -M gbruns18@earlham.edu
+
+echo "queue is `echo $PBS_QUEUE`"
+echo "hostfile contains `cat $PBS_NODEFILE`"; echo ""
+echo "hostname is `hostname`"
+echo "on launch cwd is `pwd`"
+echo "PBS_O_WORKDIR is `echo $PBS_O_WORKDIR`"
+
+cd $PBS_O_WORKDIR
+
+for node in 2 3 4 5 6 7 8; do echo "nodes = `echo $node`"; (for thread in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16; do echo "threads = `echo $thread`"; mpirun -np $node -hostfile whedon-hosts --map-by node simple-mpi-openmp -t $thread -d; done); done
